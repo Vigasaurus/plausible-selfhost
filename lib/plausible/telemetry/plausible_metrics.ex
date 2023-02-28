@@ -4,7 +4,6 @@ defmodule Plausible.PromEx.Plugins.PlausibleMetrics do
   """
   use PromEx.Plugin
   alias Plausible.Site
-  alias Plausible.Ingestion
 
   @impl true
   def polling_metrics(opts) do
@@ -46,15 +45,6 @@ defmodule Plausible.PromEx.Plugins.PlausibleMetrics do
           ],
           unit: {:native, :millisecond},
           measurement: :duration
-        ),
-        counter(
-          metric_prefix ++ [:ingest, :events, :buffered, :total],
-          event_name: Ingestion.Event.telemetry_event_buffered()
-        ),
-        counter(
-          metric_prefix ++ [:ingest, :events, :dropped, :total],
-          event_name: Ingestion.Event.telemetry_event_dropped(),
-          tags: [:reason]
         )
       ]
     )

@@ -558,6 +558,13 @@ promex_disabled? =
 config :plausible, Plausible.PromEx,
   disabled: promex_disabled?,
   manual_metrics_start_delay: :no_delay,
-  drop_metrics_groups: [],
+  drop_metrics_groups: [
+    :beam_system_info_manual_metrics,
+    :beam_system_limits_manual_metrics,
+    :ecto_init_event_metrics,
+    :phoenix_socket_event_metrics,
+    :phoenix_channel_event_metrics,
+    :phoenix_endpoint_manual_metrics
+  ],
   grafana: :disabled,
   metrics_server: :disabled
