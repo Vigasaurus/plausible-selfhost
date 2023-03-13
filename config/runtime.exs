@@ -290,6 +290,16 @@ config :plausible, Plausible.IngestRepo,
   max_buffer_size: ch_max_buffer_size,
   pool_size: ingest_pool_size
 
+config :plausible, Plausible.ProdRepo,
+  loggers: [Ecto.LogEntry],
+  queue_target: 500,
+  queue_interval: 2000,
+  pool_size: 1,
+  settings: [
+    max_insert_threads: 16,
+    send_progress_in_http_headers: 1
+  ]
+
 config :plausible, Plausible.AsyncInsertRepo,
   loggers: [Ecto.LogEntry],
   queue_target: 500,

@@ -62,6 +62,7 @@ defmodule Plausible.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:bypass, "~> 2.1", only: [:dev, :test]},
       {:cachex, "~> 3.4"},
+      {:ch, path: "../../github/ch", override: true},
       {:chto, github: "ruslandoga/chto"},
       {:combination, "~> 0.0.3"},
       {:connection, "~> 1.1", override: true},

@@ -10,6 +10,7 @@ defmodule Plausible.Application do
       Plausible.Repo,
       Plausible.ClickhouseRepo,
       Plausible.IngestRepo,
+      Plausible.ProdRepo,
       Plausible.AsyncInsertRepo,
       Plausible.Ingestion.Counters,
       {Finch, name: Plausible.Finch, pools: finch_pool_config()},
