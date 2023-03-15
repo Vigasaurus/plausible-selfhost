@@ -4,16 +4,15 @@ defmodule Plausible.DataMigration.Repo do
     adapter: Ecto.Adapters.ClickHouse
 
   def start(url, max_threads) when is_binary(url) and is_integer(max_threads) do
-    {:ok, _} =
-      start_link(
-        url: url,
-        queue_target: 500,
-        queue_interval: 2000,
-        pool_size: 1,
-        settings: [
-          max_insert_threads: max_threads,
-          send_progress_in_http_headers: 1
-        ]
-      )
+    start_link(
+      url: url,
+      queue_target: 500,
+      queue_interval: 2000,
+      pool_size: 1,
+      settings: [
+        max_insert_threads: max_threads,
+        send_progress_in_http_headers: 1
+      ]
+    )
   end
 end

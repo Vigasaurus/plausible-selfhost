@@ -10,26 +10,34 @@ defmodule Plausible.DataMigration do
       def run_sql_confirm(name, assigns \\ []) do
         query = unwrap(name, assigns)
 
-        if String.downcase(String.trim(IO.gets("Continue? [Y/n]: "))) in ["y", "yes"] do
-          do_run(query)
+        confirm("Execute?", fn -> do_run(name, query) end)
+      end
+
+      def confirm(message, func) do
+        prompt = IO.ANSI.white() <> message <> " [Y/n]: " <> IO.ANSI.reset()
+
+        if String.downcase(String.trim(IO.gets(prompt))) == "n" do
+          IO.puts("    #{IO.ANSI.cyan()}Skipped.#{IO.ANSI.reset()}")
+          {:ok, :skip}
         else
-          IO.puts("Skipped.")
+          func.()
         end
       end
 
       def run_sql(name, assigns \\ []) do
         query = unwrap(name, assigns)
-        do_run(query)
+        do_run(name, query)
       end
 
-      defp do_run(query) do
+      defp do_run(name, query) do
         {:ok, res} = @repo.query(query, [], timeout: :infinity)
-        IO.puts("Done!\n\n")
+        IO.puts("    #{IO.ANSI.yellow()}#{name} #{IO.ANSI.green()}Done!#{IO.ANSI.reset()}\n")
+        IO.puts(String.duplicate("-", 78))
         {:ok, res}
       end
 
       defp unwrap(name, assigns) do
-        IO.puts("-> -> Running #{name}")
+        IO.puts("#{IO.ANSI.yellow()}Running #{name}#{IO.ANSI.reset()}")
 
         query =
           "priv/data_migrations"
@@ -39,9 +47,7 @@ defmodule Plausible.DataMigration do
           |> EEx.eval_file(assigns: assigns)
 
         IO.puts("""
-        -> Query:
-
-        #{String.trim(query)}
+          -> Query: #{IO.ANSI.blue()}#{String.trim(query)}#{IO.ANSI.reset()}
         """)
 
         query
