@@ -1,1 +1,0 @@
-select count(*) from <%= @table %> where _partition_id = '<%= @partition %>'
