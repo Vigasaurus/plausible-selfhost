@@ -279,7 +279,11 @@ config :plausible, Plausible.ClickhouseRepo,
   loggers: [Ecto.LogEntry],
   queue_target: 500,
   queue_interval: 2000,
-  url: ch_db_url
+  url: ch_db_url,
+  transport_opts: [
+    keepalive: true,
+    show_econnreset: true
+  ]
 
 config :plausible, Plausible.IngestRepo,
   loggers: [Ecto.LogEntry],
@@ -288,7 +292,11 @@ config :plausible, Plausible.IngestRepo,
   url: ch_db_url,
   flush_interval_ms: ch_flush_interval_ms,
   max_buffer_size: ch_max_buffer_size,
-  pool_size: ingest_pool_size
+  pool_size: ingest_pool_size,
+  transport_opts: [
+    keepalive: true,
+    show_econnreset: true
+  ]
 
 config :plausible, Plausible.AsyncInsertRepo,
   loggers: [Ecto.LogEntry],
@@ -299,6 +307,10 @@ config :plausible, Plausible.AsyncInsertRepo,
   settings: [
     async_insert: 1,
     wait_for_async_insert: 0
+  ],
+  transport_opts: [
+    keepalive: true,
+    show_econnreset: true
   ]
 
 case mailer_adapter do
